@@ -4,7 +4,7 @@
 
 ## Описание
 
-**LBCS** это C# проект Windows Forms созданный с помощью Visual Studio. Данный проект требует [.NET Framework 4.5.1](https://dotnet.microsoft.com/en-us/download/dotnet/8.0).
+**LBCS** это C# проект Windows Forms созданный с помощью Visual Studio. Данный проект требует [.NET Framework 4.5.1](https://www.microsoft.com/ru-ru/download/details.aspx?id=40779). 
 
 ## Использование
 ### Внимание!!!
