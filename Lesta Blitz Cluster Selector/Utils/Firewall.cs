@@ -37,7 +37,7 @@ namespace Lesta_Blitz_Cluster_Selector.Utils
             string action = "block"; // allow,block,bypass
             string protocol = "any"; // TCP, UDP
             string remoteIp = GetIPAddressesString(addressParts[0]);
-            //string remotePort = "any"; "remotePort={5}"
+            //string remotePort = addressParts[1]; // "remotePort={5}"
 
             ProcessStartInfo info = new ProcessStartInfo(@"C:\Windows\System32\netsh.exe");
             info.Arguments = String.Format(parameters, rulename, direction, action, protocol, remoteIp);

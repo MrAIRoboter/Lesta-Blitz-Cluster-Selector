@@ -12,7 +12,7 @@ namespace Lesta_Blitz_Cluster_Selector.Models
 {
     public static class Lesta
     {
-        public static readonly string RegionsConfigUrl = "https://cdn-ptl-static-2.tanksblitz.ru/tb-static/conf/regions_10.4.0_ruby.yaml";
+        public static readonly string RegionsConfigUrl = "https://cdn-ptl-static-2.tanksblitz.ru/tb-static/conf/regions_10.7.0_ruby.yaml";
 
         public static bool TryGetClusterAddresses(ref List<string> addresses)
         {
