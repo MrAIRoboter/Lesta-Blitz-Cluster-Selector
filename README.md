@@ -3,11 +3,11 @@
 Как известно, оффициальный клиент Tanks Blitz от Lesta произвольно подбирает игровые кластеры для подключения, данная программа предоставит вам право выбора наиболее удобного вам кластера.
 Прошу вас использовать данную программу исключительно в мирных целях.
 
-## Поддерживаемая версия: 10.7.1
+## Поддерживаемая версия: 11.0.0
 
 ## Описание
 
-**LBCS** это C# проект Windows Forms созданный с помощью Visual Studio. Данный проект требует [.NET Framework 4.5.1](https://www.microsoft.com/ru-ru/download/details.aspx?id=40779). 
+**LBCS** это C# проект Windows Forms созданный с помощью Visual Studio. Данный проект требует [.NET Framework 4.8.1](https://dotnet.microsoft.com/en-us/download/dotnet-framework/thank-you/net481-offline-installer). 
 **LBCS** поддерживает только кластеры Lesta.
 
 ## Использование
