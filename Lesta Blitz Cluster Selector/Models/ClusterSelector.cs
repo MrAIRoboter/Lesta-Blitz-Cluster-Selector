@@ -62,7 +62,12 @@ namespace Lesta_Blitz_Cluster_Selector.Models
             ClustersAddresses = new Dictionary<string, bool>();
 
             foreach (string address in adresses)
+            {
+                if (Firewall.TryGetIPAddressesString(address, out _, out _) == false)
+                    continue;
+
                 ClustersAddresses.Add(address, Firewall.IsOutTcpConnectionRuleExists(address));
+            } 
 
             return true;
         }

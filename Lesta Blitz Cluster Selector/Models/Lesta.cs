@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Lesta_Blitz_Cluster_Selector.Utils;
@@ -12,7 +13,7 @@ namespace Lesta_Blitz_Cluster_Selector.Models
 {
     public static class Lesta
     {
-        public static readonly string RegionsConfigUrl = "http://cdn-ptl-static-2.tanksblitz.ru/tb-static/conf/regions_11.2.0_ruby.yaml";
+        public static readonly string RegionsConfigUrl = "http://cdn-ptl-static-2.tanksblitz.ru/tb-static/conf/regions_11.10.0_ruby.yaml";
 
         public static bool TryGetClusterAddresses(ref List<string> addresses)
         {
@@ -61,7 +62,9 @@ namespace Lesta_Blitz_Cluster_Selector.Models
                                 keyScalarNode.Value == "url" &&
                                 innerNode.Value is YamlScalarNode valueScalarNode)
                             {
-                                result.Add(valueScalarNode.Value);
+                                string[] addressParts = valueScalarNode.Value.Split(':');
+
+                                result.Add(addressParts[0]);
                             }
                         }
                     }

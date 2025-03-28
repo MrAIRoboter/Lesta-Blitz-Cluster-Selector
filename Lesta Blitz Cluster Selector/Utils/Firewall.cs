@@ -12,18 +12,12 @@ namespace Lesta_Blitz_Cluster_Selector.Utils
 {
     public static class Firewall
     {
-        public static readonly string BlockOutTcpConnectionByAddressRuleName = "LBCS Out Tcp Connection Block-";
+        public static readonly string BlockOutTcpConnectionByAddressRuleName = "@LBCS Out Tcp Connection Block-";
 
         public static void BlockOutTcpConnectionByAddress(string address)
         {
             if (IsOutTcpConnectionRuleExists(address) == true)
                 return;
-
-            string[] addressParts = address.Split(':');
-
-
-            if(addressParts.Length != 2)
-                throw new ArgumentException("Address is not valid.");
 
             string parameters = "advfirewall firewall add rule " +
                                   "name=\"{0}\" " +
@@ -36,7 +30,11 @@ namespace Lesta_Blitz_Cluster_Selector.Utils
             string direction = "out"; // in,out
             string action = "block"; // allow,block,bypass
             string protocol = "any"; // TCP, UDP
-            string remoteIp = GetIPAddressesString(addressParts[0]);
+            string remoteIp;
+
+            if (TryGetIPAddressesString(address, out remoteIp, out Exception exception) == false)
+                throw exception;
+
             //string remotePort = addressParts[1]; // "remotePort={5}"
 
             ProcessStartInfo info = new ProcessStartInfo(@"C:\Windows\System32\netsh.exe");
@@ -54,12 +52,7 @@ namespace Lesta_Blitz_Cluster_Selector.Utils
             if (IsOutTcpConnectionRuleExists(address) == false)
                 return;
 
-            string[] addressParts = address.Split(':');
-
             string ruleName = $"{BlockOutTcpConnectionByAddressRuleName}{address}";
-
-            if (addressParts.Length != 2)
-                throw new ArgumentException("Address is not valid.");
 
             string parameters = "advfirewall firewall delete rule " +
                                   "name=\"{0}\" ";
@@ -95,20 +88,31 @@ namespace Lesta_Blitz_Cluster_Selector.Utils
             return output.Contains(ruleName);
         }
 
-        private static string GetIPAddressesString(string domain) // result example: 127.0.0.1,192.168.0.1
+        public static bool TryGetIPAddressesString(string domain, out string result, out Exception exception) // result example: 127.0.0.1,192.168.0.1
         {
-            string result = "";
-            IPAddress[] addresses = Dns.GetHostAddresses(domain);
+            result = null;
+            exception = null;
 
-            for(int i = 0; i < addresses.Length; i++)
-                       {
-                if (i != 0)
-                    result += ",";
+            try
+            {
+                IPAddress[] addresses = Dns.GetHostAddresses(domain);
+                result = "";
 
-                result += addresses[i].ToString();
+                for (int i = 0; i < addresses.Length; i++)
+                {
+                    if (i != 0)
+                        result += ",";
+
+                    result += addresses[i].ToString();
+                }
+            }
+            catch(Exception ex)
+            {
+                exception = ex;
+                return false;
             }
 
-            return result;
+            return true;
         }
 
         public static void EnableFirewall()

@@ -5,10 +5,14 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Threading;
 using Lesta_Blitz_Cluster_Selector.Models;
+using Lesta_Blitz_Cluster_Selector.Utils;
+using Lesta_Blitz_Cluster_Selector.Utils.WinForms;
 
 namespace Lesta_Blitz_Cluster_Selector
 {
@@ -24,20 +28,31 @@ namespace Lesta_Blitz_Cluster_Selector
 
         private void InitializeClustersCheckedListBox()
         {
-            if (ClusterSelector.TryInitialize() == false)
+            ClustersCheckedListBox.Enabled = false;
+
+            Task.Run(() =>
             {
-                MessageBox.Show("Не удалось загрузить список кластеров! Проверьте-интернет соединение, либо проверьте наличие обновлений программы.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
+                bool isClusterSelectorInitializedSuccess = ClusterSelector.TryInitialize() == true;
 
-            ClustersCheckedListBox.Items.Clear();
+                if (ClusterSelector.TryInitialize() == false)
+                {
+                    MessageBox.Show("Не удалось загрузить список кластеров! Проверьте-интернет соединение, либо проверьте наличие обновлений программы.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
 
-            foreach (KeyValuePair<string, bool> clusterAddressPair in ClusterSelector.ClustersAddresses)
-                ClustersCheckedListBox.Items.Add(clusterAddressPair.Key, !clusterAddressPair.Value);
+                this.InvokeAction(() => 
+                {
+                    ClustersCheckedListBox.Items.Clear();
 
-            ClustersCheckedListBox.ItemCheck -= ClustersCheckedListBox_ItemCheck;
-            ClustersCheckedListBox.ItemCheck += ClustersCheckedListBox_ItemCheck;
+                    foreach (KeyValuePair<string, bool> clusterAddressPair in ClusterSelector.ClustersAddresses)
+                        ClustersCheckedListBox.Items.Add(clusterAddressPair.Key, !clusterAddressPair.Value);
 
+                    ClustersCheckedListBox.ItemCheck -= ClustersCheckedListBox_ItemCheck;
+                    ClustersCheckedListBox.ItemCheck += ClustersCheckedListBox_ItemCheck;
+
+                    ClustersCheckedListBox.Enabled = true;
+                });
+            });
         }
 
         private void ClustersCheckedListBox_ItemCheck(object sender, ItemCheckEventArgs e)

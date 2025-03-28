@@ -69,6 +69,7 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
     <Reference Include="YamlDotNet, Version=15.0.0.0, Culture=neutral, PublicKeyToken=ec19458f3c15af5e, processorArchitecture=MSIL">
       <HintPath>..\packages\YamlDotNet.15.3.0\lib\net47\YamlDotNet.dll</HintPath>
     </Reference>
@@ -86,6 +87,7 @@
     <Compile Include="Models\ClusterSelector.cs" />
     <Compile Include="Utils\ContentDownloader.cs" />
     <Compile Include="Utils\Firewall.cs" />
+    <Compile Include="Utils\WinForms\FormExtensions.cs" />
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
